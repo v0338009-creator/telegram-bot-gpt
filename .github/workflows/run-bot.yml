@@ -3,7 +3,13 @@ name: Запуск AI Бота
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *'
+    # Каждые 65 минут, чтобы запуски не пересекались
+    - cron: '*/65 * * * *'
+
+# Защита от одновременных запусков
+concurrency:
+  group: telegram-bot
+  cancel-in-progress: true
 
 jobs:
   run-bot:
@@ -11,7 +17,7 @@ jobs:
     timeout-minutes: 60
 
     steps:
-      - name: Скачать код из репозитория
+      - name: Скачать код
         uses: actions/checkout@v4
 
       - name: Установить Python
@@ -19,7 +25,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Установить библиотеки
+      - name: Установить зависимости
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
