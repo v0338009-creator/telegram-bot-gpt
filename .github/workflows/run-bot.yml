@@ -2,8 +2,6 @@ name: Запуск AI бота
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/30 * * * *'
 
 concurrency:
   group: telegram-bot
@@ -34,4 +32,6 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          AI_MODEL: ${{ secrets.AI_MODEL }}
         run: python bot.py
